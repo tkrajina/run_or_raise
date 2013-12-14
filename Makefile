@@ -3,6 +3,6 @@ CFLAGS=-Wall -g
 PKG_CONFIG=$(shell pkg-config --cflags --libs x11)
 
 make:
-	$(CC) $(CFLAGS) raise_window.c $(PKG_CONFIG) -o raise_window
+	$(CC) $(CFLAGS) run_or_raise.c $(PKG_CONFIG) -o run_or_raise
 clean:
-	rm raise_window
+	rm run_or_raise

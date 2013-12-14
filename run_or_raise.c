@@ -128,8 +128,7 @@ int main(int argc, char *argv[]) {
 
         bring_to_front(display, &root_window, pid);
     } else {
-        printf("Can't find PID for this app!\n");
-        return 1;
+        system(app_name);
     }
 
     return 0;
