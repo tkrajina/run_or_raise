@@ -1,3 +1,4 @@
-run_or_raise
+raise_window
 *.swp
 *.swo
+tags
