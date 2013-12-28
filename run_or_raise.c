@@ -1,10 +1,7 @@
-#include <X11/Xlib.h>
 #include <X11/Xutil.h>
-#include <X11/Xatom.h>
 #include <dirent.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <sys/stat.h>
 #include <string.h>
 
 #define _MAX_LINE_PARTS 50
