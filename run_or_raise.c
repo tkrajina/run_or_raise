@@ -7,6 +7,9 @@
 #include <sys/stat.h>
 #include <string.h>
 
+#define _MAX_LINE_PARTS 50
+#define _MAX_LINE_PART_CHARS 1000
+
 int get_window_pid(Display *display, Window *window) {
     XTextProperty text_data;
     Atom atom = XInternAtom(display, "_NET_WM_PID", True);
@@ -62,7 +65,7 @@ int find_pid(char *app_name) {
 
     while((dir_entry = readdir(proc_dir))) {
         char cmdline_file[100],
-             line[50][200];
+             line[_MAX_LINE_PARTS][_MAX_LINE_PART_CHARS];
         int line_part = 0;
 
         if(is_numeric(dir_entry->d_name)) {
@@ -72,7 +75,8 @@ int find_pid(char *app_name) {
             if(f) {
                 char c;
                 int i = 0;
-                while((c = fgetc(f)) != EOF && (i < sizeof(line) - 1)) {
+                while((c = fgetc(f)) != EOF && line_part < _MAX_LINE_PARTS
+                      && i < _MAX_LINE_PART_CHARS) {
                     if(c == '\0') {
                         line[line_part][i] = c;
                         ++ line_part;
@@ -81,7 +85,6 @@ int find_pid(char *app_name) {
                         line[line_part][i] = c;
                         ++ i;
                     }
-                    //printf("line[%i]=%s\n", line_part, line[line_part]);
                 }
                 if(i > 0) {
                     line[line_part][i] = '\0';
@@ -89,13 +92,6 @@ int find_pid(char *app_name) {
 
                 fclose(f);
 
-                /*
-                for(i = 0; i < line_part; i++) {
-                    printf("%10s -> %i: %s\n", dir_entry->d_name, i, line[i]);
-                }
-                */
-
-                //printf("strcmp(%s, %s)=%i\n", line[0], app_name, strcmp(line[0], app_name));
                 if(strcmp(line[0], app_name) == 0) {
                     return pid;
                 }
